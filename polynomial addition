@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct poly
+{
+    int exp,coef;
+}p1[10],p2[10],r1[50];
+void enter(int m, struct poly p[])
+{
+    for (int i=0;i<m;i++)
+    {
+        printf("enter the %d coef and exp of your poly",i+1);
+        scanf("%d %d",&p[i].coef,&p[i].exp);
+        printf("\n");
+    }
+}
+void display(int m,struct poly p[])
+{
+   for (int i=0;i<m;i++)
+    {
+       if (i!=m-1)
+       {
+           printf("%dx^%d+   ",p[i].coef,p[i].exp);
+       }
+       else
+       {
+           printf("%dx^%d",p[i].coef,p[i].exp);
+       }
+    }
+}
+void add(int m,int n,struct poly p[],struct poly q[],struct poly r[])
+{
+    int i,j,k=0;
+    while (i<m && j<n)
+    {
+        if (p[i].exp<q[j].exp)
+        {
+            r[k].exp=p[i].exp;
+            r[k].coef=p[i].coef;
+            k++,i++;
+        }
+        else if(p[i].exp>q[j].exp)
+        {
+            r[k].exp=q[j].exp;
+            r[k].coef=q[j].coef;
+            j++,k++;
+        }
+        else
+        {
+            r[k].exp=p[i].exp;
+            r[k].coef=p[i].coef+q[j].coef;
+            i++,j++,k++;
+        }
+    }
+    while (i<m)
+    {
+        r[k].exp=p[i].exp;
+        r[k].coef=p[i].coef;
+        i++,k++;
+    }
+    while (j<n)
+    {
+        r[k].exp=q[j].exp;
+        r[k].coef=q[j].coef;
+        k++,j++;
+    }
+    for (i=0;i<k;i++)
+    {
+        if (i!=k-1)
+       {
+           printf("%dx^%d+   ",r[i].coef,r[i].exp);
+       }
+       else
+       {
+           printf("%dx^%d",r[i].coef,r[i].exp);
+       }
+    }
+}
+void main()
+{
+    int n1,n2;
+    int op;
+    char ch='y';
+    while (ch=='y')
+    {
+    printf("1.enter poly 2.disp poly 3.add poly");
+    scanf("%d",&op);
+    switch (op)
+    {
+    case 1:
+        printf("first poly");
+        printf("no of terms of p1?");
+        scanf("%d",&n1);
+        enter(n1,p1);
+        printf("second poly");
+        printf("no of terms of p2?");
+        scanf("%d",&n2);
+        enter(n2,p2);
+        break;
+    case 2:
+        printf("1st poly: ");
+        display(n1,p1);
+        printf("\n");
+        printf("2nd poly: ");
+        display(n2,p2);
+        break;
+    case 3:
+        printf("p1 + p2: ");
+        add(n1,n2,p1,p2,r1);
+        break;
+    }
+    printf("do you want to continue? y/n");
+    scanf(" %c",&ch);
+    }
+}
