@@ -1,0 +1,148 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+char a[50],b[50],c[50];
+int top=-1;
+int r[50];//evaluation expression
+void push(char val)
+{
+  top++;
+  c[top]=val;
+
+}
+void pushr(int n1)
+{
+    top++;
+    r[top]=n1;
+}
+char pop()
+{
+char x;
+x=c[top];
+top--;
+return x;
+}
+int popr()
+{
+    int x;
+    x=r[top];
+    top--;
+    return x;
+}
+int pr(char t)
+{
+ switch(t)
+ {
+ case '+': return 1;
+
+ case '-':return 1;
+
+ case '*':return 2;
+
+ case '/':return 2;
+
+ case '^':return 3;
+ default:
+    return 0;
+
+ }
+}
+void infixtopost()
+{
+   int j=0;
+printf("enter your expression");
+scanf("%s",a);
+for (int i=0;a[i]!='\0';i++)
+{
+  if(a[i]=='(')
+  {
+      push(a[i]);
+  }
+  else if((a[i]>='A'&&a[i]<='Z') || (a[i]>='a'&&a[i]<='z'))
+  {
+    b[j]=a[i];
+    j++;
+  }
+  else if(a[i]==')')
+  {
+   char ch;
+   ch=c[top];
+   while (ch!='(')
+   {
+    b[j]=pop();
+    j++;
+    ch = c[top];
+   }
+   char c=pop();
+  }
+  else
+  {
+  while(pr(a[i])<=pr(c[top]))
+  {
+  b[j]=pop();
+  j++;
+//push(a[i]);
+  }
+  push(a[i]);
+  }
+}
+while (top >= 0) {
+        b[j] = pop();
+        j++;}
+
+  b[j] = '\0'; // Null-terminate the output string
+  printf("%s",b); 
+}
+void eval()
+{
+   top=-1; //reintialise
+for (int i=0;b[i]!='\0';i++)
+{
+    if (isalpha(b[i])) {
+            printf("Enter the value for %c: ", b[i]);
+            int n;
+            scanf("%d", &n);
+            pushr(n);
+        } else {
+            int result;
+            int op2 = popr();
+            int op1 = popr();
+
+            switch (b[i]) {
+                case '+': result = op1 + op2; break;
+                case '-': result = op1 - op2; break;
+                case '*': result = op1 * op2; break;
+                case '/': result = op1 / op2; break;
+                case '^': break; // You need to specify what to do for the '^' operator
+            }
+
+            pushr(result);
+        }
+    }
+
+    // Print the result of the evaluation
+    printf("Result: %d\n", r[0]); // Assuming that the final result is in r[0]
+}
+
+int main()
+{ int ch=0;
+  do
+  {
+  printf("\n1.infix to postfix\n2. evaluation of expresion\n3.exit\nenter your the choice");
+  scanf("%d",&ch);
+  switch(ch)
+  {
+      case 1:
+      infixtopost();
+      break;
+      case 2:
+      eval();
+      break;
+      case 3:
+      break;
+      
+  }
+  }while(ch!=3);
+  printf("thanku");
+  return 0;
+}
